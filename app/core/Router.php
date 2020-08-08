@@ -2,7 +2,7 @@
 
 class Router
 {
-    protected $routes;
+    private $routes;
 
     public function __construct(array $definitions)
     {
