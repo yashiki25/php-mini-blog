@@ -2,11 +2,11 @@
 
 class Response
 {
-    private $content;
+    private string $content;
     // TODO: ステータスコードとテキストを別ファイルに定義
-    private $statusCode = 200;
-    private $statusText = 'OK';
-    private $httpHeaders = [];
+    private int $statusCode = 200;
+    private string $statusText = 'OK';
+    private array $httpHeaders = [];
 
     /**
      * レスポンス送信

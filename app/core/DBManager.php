@@ -2,9 +2,9 @@
 
 class DBManager
 {
-    private $connections = [];
-    private $repositoryConnectionMap = [];
-    private $repositories = [];
+    private array $connections = [];
+    private array $repositoryConnectionMap = [];
+    private array $repositories = [];
 
     public function __destruct()
     {

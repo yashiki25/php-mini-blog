@@ -2,7 +2,7 @@
 
 class ClassLoader
 {
-    protected $dirs;
+    private array $dirs = [];
 
     /**
      * オートロードクラスを登録する

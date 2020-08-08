@@ -2,7 +2,7 @@
 
 class Router
 {
-    private $routes;
+    private array $routes = [];
 
     public function __construct(array $definitions)
     {
