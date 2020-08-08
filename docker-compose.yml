@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+  nginx:
+    build: "./.docker/nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - "./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./app:/app"
+    depends_on:
+      - app
+
+  app:
+    build: "./.docker/php"
+    working_dir: "/app"
+    volumes:
+      - ".:/app"
+      - "./.docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    depends_on:
+      - mysql
+
+#  minio:
+#    image: minio/minio
+#    ports:
+#      - "9000:9000"
+#    volumes:
+#      - "./storage/minio:/storage"
+#    command: server /storage
+#    environment:
+#      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+#      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+#      MINIO_REGION: ap-northeast-1
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./storage/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_USER: ${DB_USERNAME:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    hostname: phpmyadmin
+    links:
+      - "mysql:db"
+    ports:
+      - "9090:80"
+
+  redis:
+    image: redis:5.0-alpine
+    ports:
+      - "6379:6379"
