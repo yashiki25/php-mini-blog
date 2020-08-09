@@ -8,6 +8,7 @@ abstract class Application
     private Session $session;
     private DBManager $dbManager;
     private Router $router;
+    private array $loginAction = [];
 
     public function __construct(bool $debug = null)
     {
@@ -93,6 +94,7 @@ abstract class Application
 
     /**
      * コントローラーのアクションを呼び出し
+     * @throws HttpNotFoundException
      */
     public function run(): void
     {
@@ -109,6 +111,9 @@ abstract class Application
             $this->runAction($controller, $action);
         } catch (HttpNotFoundException $e) {
             $this->render404Page($e);
+        } catch (UnauthorizedActionException $e) {
+            list($controller, $action) = $this->loginAction;
+            $this->runAction($controller, $action);
         }
 
         $this->response->send();
@@ -119,6 +124,7 @@ abstract class Application
      * @param string $controllerName
      * @param string $action
      * @param array $params
+     * @throws HttpNotFoundException
      */
     public function runAction(string $controllerName, string $action, array $params = []): void
     {
