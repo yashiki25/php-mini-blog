@@ -19,26 +19,14 @@ services:
     depends_on:
       - mysql
 
-#  minio:
-#    image: minio/minio
-#    ports:
-#      - "9000:9000"
-#    volumes:
-#      - "./storage/minio:/storage"
-#    command: server /storage
-#    environment:
-#      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
-#      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-#      MINIO_REGION: ap-northeast-1
-
   mysql:
-    image: mysql:5.7
+    build: "./.docker/mysql"
     ports:
       - "3306:3306"
     volumes:
       - "./storage/mysql:/var/lib/mysql"
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_DATABASE: ${DB_DATABASE:-php}
       MYSQL_USER: ${DB_USERNAME:-root}
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
@@ -55,3 +43,15 @@ services:
     image: redis:5.0-alpine
     ports:
       - "6379:6379"
+
+#  minio:
+#    image: minio/minio
+#    ports:
+#      - "9000:9000"
+#    volumes:
+#      - "./storage/minio:/storage"
+#    command: server /storage
+#    environment:
+#      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+#      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+#      MINIO_REGION: ap-northeast-1
