@@ -23,7 +23,7 @@ abstract class Controller
     }
 
     /**
-     * アクジョン実行
+     * アクション実行
      * @param string $action
      * @param array $params
      * @return mixed
@@ -64,7 +64,7 @@ abstract class Controller
      * @param string $layout
      * @return string
      */
-    private function render(array $variables = [], string $template = null, string $layout = 'layout')
+    protected function render(array $variables = [], string $template = null, string $layout = 'layout')
     {
         $default = [
             'request'  => $this->request,
@@ -106,7 +106,7 @@ abstract class Controller
         $this->response->setHttpHeader('Location', $url);
     }
 
-    private function generatedCsrfToken(string $formName)
+    protected function generateCsrfToken(string $formName)
     {
         $key = "csrf_tokens/{$formName}";
         $tokens = $this->session->get($key, []);
@@ -124,7 +124,7 @@ abstract class Controller
         return $token;
     }
 
-    private function checkCsrfToken(string $formName, string $token)
+    protected function checkCsrfToken(string $formName, string $token)
     {
         $key = "csrf_tokens/{$formName}";
         $tokens = $this->session->get($key, []);

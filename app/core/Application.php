@@ -45,7 +45,7 @@ abstract class Application
 
     abstract public function getRootDir();
 
-    abstract protected function registerRouter();
+    abstract protected function registerRoutes();
 
     public function isDebugMode(): bool
     {
