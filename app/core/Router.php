@@ -23,9 +23,9 @@ class Router
             foreach ($tokens as $i => $token) {
                 if (strpos($token, ':') === 0) {
                     $name = substr($token, 1);
-                    $token = "(?P<){$token}>[^/]+)";
+                    $token = "(?P<{$name}>[^/]+)";
                 }
-                $routes[$i] = $token;
+                $tokens[$i] = $token;
             }
 
             $pattern = '/' . implode('/', $tokens);
