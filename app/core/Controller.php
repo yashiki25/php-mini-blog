@@ -4,11 +4,11 @@ abstract class Controller
 {
     private string $controllerName;
     private string $actionName;
-    private string $application;
-    private Request $request;
-    private Response $response;
-    private Session $session;
-    private DBManager $dbManager;
+    protected Application $application;
+    protected Request $request;
+    protected Response $response;
+    protected Session $session;
+    protected DBManager $dbManager;
     private $authActions = [];
 
     public function __construct(Application $application)

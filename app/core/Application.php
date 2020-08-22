@@ -3,11 +3,11 @@
 abstract class Application
 {
     private bool $debug = false;
-    private Request $request;
-    private Response $response;
-    private Session $session;
-    private DBManager $dbManager;
-    private Router $router;
+    protected Request $request;
+    protected Response $response;
+    protected Session $session;
+    protected DBManager $dbManager;
+    protected Router $router;
     private array $loginAction = [];
 
     public function __construct(bool $debug = null)
@@ -35,7 +35,7 @@ abstract class Application
         $this->response = new Response();
         $this->session = new Session();
         $this->dbManager = new DBManager();
-        $this->router = new Router($this->registerRouter());
+        $this->router = new Router($this->registerRoutes());
     }
 
     private function configure()
