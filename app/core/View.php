@@ -17,7 +17,7 @@ class View
         $this->layoutVariable[$name] = $value;
     }
 
-    public function render(string $_path, array $_variables = [], bool $_layout = false): string
+    public function render(string $_path, array $_variables = [], string $_layout = null): string
     {
         $_file = "{$this->baseDir}/{$_path}.php";
 
@@ -30,7 +30,7 @@ class View
 
         $content = ob_get_clean();
 
-        if ($_layout) {
+        if (isset($_layout)) {
             $content = $this->render($_layout,
                 array_merge($this->layoutVariable, [
                     '_content' => $content,
