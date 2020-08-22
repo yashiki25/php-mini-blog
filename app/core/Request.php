@@ -111,6 +111,6 @@ class Request
             $requestUri = substr($requestUri, 0, $pos);
         }
 
-        return (string)substr($requestUri, srtlen($baseUrl));
+        return (string)substr($requestUri, mb_strlen($baseUrl));
     }
 }
