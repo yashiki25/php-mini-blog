@@ -2,6 +2,8 @@
 
 namespace App;
 
+require 'vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
 class Env
@@ -10,10 +12,8 @@ class Env
 
     public static function get($key)
     {
-        if ((self::$dotEnv instanceof Dotenv) === false) {
-            self::$dotEnv = Dotenv::create('../');
-            self::$dotEnv->load();
-        }
+        self::$dotEnv = Dotenv::createImmutable('../../');
+        self::$dotEnv->load();
 
         return array_key_exists($key, $_ENV) ? $_ENV[$key] : null;
     }

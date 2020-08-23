@@ -27,7 +27,7 @@ class MiniBlogApplication extends Application
         ];
     }
 
-    private function configure()
+    protected function configure()
     {
         $this->dbManager->connect('master', [
             'dsn'      => 'mysql:dbname=' . Env::get('DB_DATABASE') . ';host=' . Env::get('DB_HOST'),
