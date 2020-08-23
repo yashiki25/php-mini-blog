@@ -46,7 +46,8 @@ class UserRepository extends DBRepository
             ':user_name' => $userName
         ]);
 
-        if ($row['count'] === 0) {
+        // レコードがない場合はfalse
+        if (!$row) {
             return true;
         }
 
