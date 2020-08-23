@@ -92,7 +92,7 @@ abstract class Controller
         throw new HttpNotFoundException("Forwarded 404 page from {$this->controllerName}/{$this->actionName}");
     }
 
-    private function redirect(string $url)
+    protected function redirect(string $url): void
     {
         if (!preg_match('#https?://#', $url)) {
             $protocol = $this->request->isSsl() ? 'https://' : 'http://';

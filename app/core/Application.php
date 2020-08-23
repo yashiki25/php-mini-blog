@@ -38,7 +38,7 @@ abstract class Application
         $this->router = new Router($this->registerRoutes());
     }
 
-    private function configure()
+    protected function configure()
     {
 
     }
