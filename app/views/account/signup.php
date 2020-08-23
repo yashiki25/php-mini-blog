@@ -9,14 +9,17 @@
         <tbody>
         <tr>
             <th>ユーザーID</th>
+            <?php if (isset($errors['user_name'])) { ?>
+            <p><?php echo $this->escape($errors['user_name']); ?></p>
+            <?php } ?>
             <td>
-                <input type="text" name="user_name">
+                <input type="text" name="user_name" value="<?php echo $this->escape($user_name); ?>">
             </td>
         </tr>
         <tr>
             <th>パスワード</th>
             <td>
-                <input type="password" name="password">
+                <input type="password" name="password" value="<?php echo $this->escape($password); ?>">
             </td>
         </tr>
         </tbody>
