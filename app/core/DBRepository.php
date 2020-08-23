@@ -2,18 +2,18 @@
 
 abstract class DBRepository
 {
-    private PDO $con;
+    protected $con;
 
-    public function __construct(PDO $con)
+    public function __construct($con)
     {
         $this->setConnection($con);
     }
 
     /**
      * コネクションをセット
-     * @param PDO $con
+     * @param $con
      */
-    public function setConnection(PDO $con): void
+    public function setConnection($con): void
     {
         $this->con = $con;
     }
@@ -22,9 +22,8 @@ abstract class DBRepository
      * SQLを実行
      * @param string $sql
      * @param array $params
-     * @return bool|PDOStatement
      */
-    public function execute(string $sql, array $params = [])
+    public function execute(string $sql, $params = [])
     {
         $stmt = $this->con->prepare($sql);
         $stmt->execute($params);
@@ -36,9 +35,8 @@ abstract class DBRepository
      * 実行結果を1行のみ取得
      * @param string $sql
      * @param array $params
-     * @return array
      */
-    public function fetch(string $sql, array $params = []): array
+    public function fetch(string $sql, array $params = [])
     {
         return $this->execute($sql, $params)->fetch(PDO::FETCH_ASSOC);
     }
@@ -47,9 +45,8 @@ abstract class DBRepository
      * 実行結果を全て取得
      * @param string $sql
      * @param array $params
-     * @return array
      */
-    public function fetchAll(string $sql, array $params = []): array
+    public function fetchAll(string $sql, array $params = [])
     {
         return $this->execute($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
     }

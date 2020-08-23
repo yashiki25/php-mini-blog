@@ -19,7 +19,7 @@ class Session
      * @param string $name
      * @param string $value
      */
-    public function set(string $name, array $value): void
+    public function set(string $name, $value): void
     {
         $_SESSION[$name] = $value;
     }

@@ -46,9 +46,8 @@ class DBManager
     /**
      * DBコネクションを取得
      * @param string|null $name
-     * @return PDO
      */
-    public function getConnection(string $name = null): PDO
+    public function getConnection(string $name = null)
     {
         if (is_null($name)) {
             return current($this->connections);
@@ -60,9 +59,8 @@ class DBManager
     /**
      * 指定リポジトリのコネクションを取得
      * @param string $repositoryName
-     * @return PDO
      */
-    public function getConnectionForRepository(string $repositoryName): PDO
+    public function getConnectionForRepository(string $repositoryName)
     {
         if (isset($this->repositoryConnectionMap[$repositoryName])) {
             $name = $this->repositoryConnectionMap[$repositoryName];
