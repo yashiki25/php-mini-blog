@@ -2,7 +2,7 @@
 
 class Response
 {
-    private string $content;
+    private ?string $content;
     // TODO: ステータスコードとテキストを別ファイルに定義
     private int $statusCode = 200;
     private string $statusText = 'OK';
@@ -13,7 +13,7 @@ class Response
      */
     public function send(): void
     {
-        header("HTTP/1.1{$this->statusCode} {$this->statusText}");
+//        header("HTTP/1.1{$this->statusCode} {$this->statusText}");
 
         foreach ($this->httpHeaders as $name => $value) {
             header("{$name}: {$value}");
