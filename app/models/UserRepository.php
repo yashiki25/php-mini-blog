@@ -15,7 +15,7 @@ class UserRepository extends DBRepository
         $stmt = $this->execute($sql, [
             ':user_name'  => $userName,
             ':password'   => $password,
-            ':created_at' => $now
+            ':created_at' => $now->format('Y-m-d H:i:s')
         ]);
     }
 
