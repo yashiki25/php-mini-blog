@@ -46,6 +46,7 @@ class AccountController extends Controller
             $this->session->setAuthenticated(true);
 
             $user = $this->dbManager->get('User')->fetchByUserName($userName);
+            $this->session->set('user', $user);
 
             return $this->redirect('/');
         }
