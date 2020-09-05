@@ -67,9 +67,20 @@ class StatusController extends Controller
         $statuses = $this->dbManager->get('Status')
             ->fetchAllByUserId($user['id']);
 
+        $following = null;
+        if ($this->session->isAuthenticated()) {
+            $my = $this->session->get('user');
+            if ($my['id'] !== $user['id']) {
+                $following = $this->dbManager->get('Following')
+                    ->isFollowing($my['id'], $user['id']);
+            }
+        }
+
         return $this->render([
-            'user'     => $user,
-            'statuses' => $statuses,
+            'user'      => $user,
+            'statuses'  => $statuses,
+            'following' => $following,
+            '_token'    => $this->generateCsrfToken('account/follow')
         ]);
     }
 

@@ -3,7 +3,7 @@
 <h2>ログイン</h2>
 
 <p>
-    <a href="<?php echo $base_url; ?>/account/signin">新規ユーザー登録</a>
+    <a href="<?php echo $base_url; ?>/account/signup">新規ユーザー登録</a>
 </p>
 
 <form action="<?php echo $base_url ?>/account/authenticate" method="post">

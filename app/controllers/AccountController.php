@@ -2,7 +2,7 @@
 
 class AccountController extends Controller
 {
-    protected $authActions = ['index', 'signout'];
+    protected $authActions = ['index', 'signout', 'follow'];
 
     public function signupAction()
     {
@@ -143,7 +143,46 @@ class AccountController extends Controller
     public function indexAction()
     {
         $user = $this->session->get('user');
+        $followings = $this->dbManager->get('User')
+            ->fetchAllFollowingByUserId($user['id']);
 
-        return $this->render(['user' => $user]);
+        return $this->render([
+            'user'       => $user,
+            'followings' => $followings
+        ]);
+    }
+
+    public function followAction()
+    {
+        if (!$this->request->isPost()) {
+            $this->forward404();
+        }
+
+        $followingName = $this->request->getPost('following_name');
+        if (!$followingName) {
+            $this->forward404();
+        }
+
+        $token = $this->request->getPost('_token');
+        if (!$this->checkCsrfToken('account/follow', $token)) {
+            return $this->redirect("/user/{$followingName}");
+        }
+
+        $followUser = $this->dbManager->get('User')
+            ->fetchByUserName($followingName);
+        if (!$followUser) {
+            $this->forward404();
+        }
+
+        $user = $this->session->get('user');
+
+        $followingRepository = $this->dbManager->get('Following');
+        if ($user['id'] !== $followUser['id']
+            && !$followingRepository->isFollowing($user['id'], $followUser['id'])
+        ) {
+            $followingRepository->insert($user['id'], $followUser['id']);
+        }
+
+        return $this->redirect('/account');
     }
 }
