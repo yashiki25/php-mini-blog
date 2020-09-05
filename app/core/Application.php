@@ -108,12 +108,12 @@ abstract class Application
             $controller = $params['controller'];
             $action = $params['action'];
 
-            $this->runAction($controller, $action);
+            $this->runAction($controller, $action, $params);
         } catch (HttpNotFoundException $e) {
             $this->render404Page($e);
         } catch (UnauthorizedActionException $e) {
             list($controller, $action) = $this->loginAction;
-            $this->runAction($controller, $action);
+            $this->runAction($controller, $action, $params);
         }
 
         $this->response->send();
