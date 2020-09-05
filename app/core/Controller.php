@@ -38,6 +38,7 @@ abstract class Controller
             $this->forward404();
         }
 
+        // ログイン状態のみ有効なアクションを制御
         if ($this->needsAuthentication($action) && !$this->session->isAuthenticated()) {
             throw new UnauthorizedActionException();
         }
