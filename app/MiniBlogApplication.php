@@ -17,21 +17,29 @@ class MiniBlogApplication extends Application
     protected function registerRoutes()
     {
         return [
-            '/'                => [
+            '/'                           => [
                 'controller' => 'status',
                 'action'     => 'index',
             ],
-            '/status/post'     => [
+            '/status/post'                => [
                 'controller' => 'status',
                 'action'     => 'post',
             ],
-            '/account'         => [
+            '/account'                    => [
                 'controller' => 'account',
                 'action'     => 'index',
             ],
-            '/account/:action' => [
+            '/account/:action'            => [
                 'controller' => 'account',
             ],
+            '/user/:user_name'            => [
+                'controller' => 'status',
+                'action'     => 'user',
+            ],
+            '/user/:user_name/status/:id' => [
+                'controller' => 'status',
+                'action'     => 'show',
+            ]
         ];
     }
 
