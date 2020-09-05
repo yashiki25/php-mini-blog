@@ -7,6 +7,7 @@
         if (isset($title)): echo $this->escape($title) . ' - '; endif; ?>
         Mini Blog
     </title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
 </head>
 <body>
     <div id="header">
@@ -27,7 +28,7 @@
         </p>
     </div>
 
-    <div>
+    <div id="main">
         <?php echo $_content; ?>
     </div>
 </body>
