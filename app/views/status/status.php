@@ -6,8 +6,7 @@
         <?php echo $this->escape($status['body']); ?>
     </div>
     <div>
-        <a href="<?php echo $this->escape($status['id']);
-        ?>/user/<?php echo $this->escape($status['user_name']);
+        <a href="/user/<?php echo $this->escape($status['user_name']);
         ?>/status/<?php echo $this->escape($status['id']); ?>">
             <?php echo $this->escape($status['created_at']); ?>
         </a>
