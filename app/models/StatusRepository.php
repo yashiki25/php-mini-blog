@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * 投稿にまつわるリポジトリ
+ * Class StatusRepository
+ */
 class StatusRepository extends DBRepository
 {
+    /**
+     * 投稿を保存
+     * @param int $userId
+     * @param string $body
+     */
     public function insert(int $userId, string $body)
     {
         $now = new DateTime();
@@ -18,6 +27,11 @@ class StatusRepository extends DBRepository
         ]);
     }
 
+    /**
+     * 自分とフォローしているユーザーの投稿を取得
+     * @param int|null $userId
+     * @return mixed
+     */
     public function fetchAllPersonalArchivesByUserId(?int $userId)
     {
         $sql = "
@@ -33,6 +47,11 @@ class StatusRepository extends DBRepository
         return $this->fetchAll($sql, [':user_id' => $userId]);
     }
 
+    /**
+     * ユーザーIDから投稿をすべて取得
+     * @param int $userId
+     * @return mixed
+     */
     public function fetchAllByUserId(int $userId)
     {
         $sql = "
@@ -46,6 +65,12 @@ class StatusRepository extends DBRepository
         return $this->fetchAll($sql, [':user_id' => $userId]);
     }
 
+    /**
+     * ユーザーIDと名前から投稿を取得
+     * @param int $id
+     * @param string $userName
+     * @return mixed
+     */
     public function fetchByIdAndUserName(int $id, string $userName)
     {
         $sql = "

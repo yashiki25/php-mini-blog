@@ -35,6 +35,11 @@ class Router
         return $routes;
     }
 
+    /**
+     * ルーティングを解決し、パスからパラメータを取得
+     * @param string $path_info
+     * @return array|false
+     */
     public function resolve(string $path_info)
     {
         if (substr($path_info, 0, 1) !== '/') {

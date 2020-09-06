@@ -12,12 +12,16 @@ abstract class Application
 
     public function __construct(bool $debug = null)
     {
-        $this->setDebugModel($debug);
+        $this->setDebugMode($debug);
         $this->initialize();
         $this->configure();
     }
 
-    private function setDebugModel(bool $debug)
+    /**
+     * デバッグモードを設定
+     * @param bool $debug
+     */
+    private function setDebugMode(bool $debug): void
     {
         if ($debug) {
             $this->debug = true;
@@ -29,7 +33,10 @@ abstract class Application
         }
     }
 
-    private function initialize()
+    /**
+     * 初期化
+     */
+    private function initialize(): void
     {
         $this->request = new Request();
         $this->response = new Response();
@@ -38,6 +45,9 @@ abstract class Application
         $this->router = new Router($this->registerRoutes());
     }
 
+    /**
+     * アプリケーション設定(DB接続)
+     */
     protected function configure()
     {
 
@@ -45,8 +55,16 @@ abstract class Application
 
     abstract public function getRootDir();
 
+    /**
+     * ルーティング(URLとコントローラー・アクションの組み合わせ)を登録
+     * @return mixed
+     */
     abstract protected function registerRoutes();
 
+    /**
+     * デバッグモードか
+     * @return bool
+     */
     public function isDebugMode(): bool
     {
         return $this->debug;
@@ -93,7 +111,7 @@ abstract class Application
     }
 
     /**
-     * コントローラーのアクションを呼び出し
+     * アプリケーションを実行
      * @throws HttpNotFoundException
      */
     public function run(): void
@@ -101,19 +119,20 @@ abstract class Application
         try {
             $params = $this->router->resolve($this->request->getPathInfo());
 
+            // ルーティングが解決できない場合はエラー
             if ($params === false) {
                 throw new HttpNotFoundException("No route found for {$this->request->getPathInfo()}");
             }
 
             $controller = $params['controller'];
             $action = $params['action'];
-
             $this->runAction($controller, $action, $params);
+
         } catch (HttpNotFoundException $e) {
             $this->render404Page($e);
         } catch (UnauthorizedActionException $e) {
             list($controller, $action) = $this->loginAction;
-            $this->runAction($controller, $action, $params);
+            $this->runAction($controller, $action);
         }
 
         $this->response->send();

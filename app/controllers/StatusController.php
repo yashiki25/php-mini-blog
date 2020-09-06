@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * 投稿にまつわるコントローラー
+ */
 class StatusController extends Controller
 {
     protected $authActions = ['index', 'post'];
 
+    /**
+     * 投稿画面を表示
+     * @return false|string
+     */
     public function indexAction()
     {
         $user = $this->session->get('user');
@@ -17,6 +24,11 @@ class StatusController extends Controller
         ]);
     }
 
+    /**
+     * 投稿を保存
+     * @return false|string|void
+     * @throws HttpNotFoundException
+     */
     public function postAction()
     {
         if (!$this->request->isPost()) {
@@ -29,6 +41,8 @@ class StatusController extends Controller
         }
 
         $body = $this->request->getPost('body');
+
+        // バリデーション
         $errors = [];
         if (!mb_strlen($body)) {
             $errors[] = 'ひとことを入力してください';
@@ -55,6 +69,12 @@ class StatusController extends Controller
         ], 'index');
     }
 
+    /**
+     * ユーザー情報を取得
+     * @param $params
+     * @return false|string
+     * @throws HttpNotFoundException
+     */
     public function userAction($params)
     {
         $user = $this->dbManager->get('User')
@@ -84,6 +104,12 @@ class StatusController extends Controller
         ]);
     }
 
+    /**
+     * 投稿詳細を表示
+     * @param $params
+     * @return false|string
+     * @throws HttpNotFoundException
+     */
     public function showAction($params)
     {
         $status = $this->dbManager->get('Status')

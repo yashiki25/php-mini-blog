@@ -8,10 +8,12 @@ class DBManager
 
     public function __destruct()
     {
+        // Repositoryクラスのインスタンスを破棄
         foreach ($this->repositories as $repository) {
             unset($repository);
         }
 
+        // PDOのインスタンスを破棄
         foreach ($this->connections as $connection) {
             unset($connection);
         }
@@ -46,6 +48,7 @@ class DBManager
     /**
      * DBコネクションを取得
      * @param string|null $name
+     * @return mixed
      */
     public function getConnection(string $name = null)
     {
@@ -70,6 +73,11 @@ class DBManager
         }
     }
 
+    /**
+     * 指定リポジトリのインスタンスを取得
+     * @param string $repositoryName
+     * @return mixed
+     */
     public function get(string $repositoryName)
     {
         if (!isset($this->repositories[$repositoryName])) {

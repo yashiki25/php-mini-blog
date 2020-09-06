@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * アカウント情報にまつわるコントローラー
+ */
 class AccountController extends Controller
 {
     protected $authActions = ['index', 'signout', 'follow'];
 
+    /**
+     * サインアップ
+     * @return false|string|void
+     */
     public function signupAction()
     {
         if ($this->session->isAuthenticated()) {
@@ -17,6 +24,10 @@ class AccountController extends Controller
         ]);
     }
 
+    /**
+     * サインイン
+     * @return false|string|void
+     */
     public function signinAction()
     {
         if ($this->session->isAuthenticated()) {
@@ -30,6 +41,11 @@ class AccountController extends Controller
         ]);
     }
 
+    /**
+     * ユーザー登録
+     * @return false|string|void
+     * @throws HttpNotFoundException
+     */
     public function registerAction()
     {
         if ($this->session->isAuthenticated()) {
@@ -48,8 +64,8 @@ class AccountController extends Controller
         $userName = $this->request->getPost('user_name');
         $password = $this->request->getPost('password');
 
+        // バリデーション
         $errors = [];
-
         if (!mb_strlen($userName)) {
             $errors = [
                 'user_name' => 'ユーザーIDを入力してください'
@@ -64,6 +80,7 @@ class AccountController extends Controller
             ];
         }
 
+        // エラーがなければユーザー登録してトップ画面へ
         if (count($errors) === 0) {
             $this->dbManager->get('User')->insert($userName, $password);
             $this->session->setAuthenticated(true);
@@ -82,6 +99,11 @@ class AccountController extends Controller
         ], 'signup');
     }
 
+    /**
+     * ログイン
+     * @return false|string|void
+     * @throws HttpNotFoundException
+     */
     public function authenticateAction()
     {
         if ($this->session->isAuthenticated()) {
@@ -100,8 +122,8 @@ class AccountController extends Controller
         $userName = $this->request->getPost('user_name');
         $password = $this->request->getPost('password');
 
+        // バリデーション
         $errors = [];
-
         if (!mb_strlen($userName)) {
             $errors[] = 'ユーザIDを入力してください';
         }
@@ -114,6 +136,7 @@ class AccountController extends Controller
             $userRepository = $this->dbManager->get('User');
             $user = $userRepository->fetchByUserName($userName);
 
+            // 入力されたパスワードが正しいか
             if (!$user || ($user['password'] !== $userRepository->hashPassword($password))) {
                 $errors[] = 'ユーザIDかパスワードが不正です';
             } else {
@@ -132,6 +155,9 @@ class AccountController extends Controller
         ], 'signin');
     }
 
+    /**
+     * ログアウト
+     */
     public function signoutAction()
     {
         $this->session->clear();
@@ -140,6 +166,10 @@ class AccountController extends Controller
         return $this->redirect('/account/signin');
     }
 
+    /**
+     * アカウント画面を表示
+     * @return false|string
+     */
     public function indexAction()
     {
         $user = $this->session->get('user');
@@ -152,6 +182,10 @@ class AccountController extends Controller
         ]);
     }
 
+    /**
+     * ユーザーをフォロー
+     * @throws HttpNotFoundException
+     */
     public function followAction()
     {
         if (!$this->request->isPost()) {
@@ -177,6 +211,7 @@ class AccountController extends Controller
         $user = $this->session->get('user');
 
         $followingRepository = $this->dbManager->get('Following');
+        // フォロー対象ユーザーが自分でないこと、かつ既にフォローしていないことを確認
         if ($user['id'] !== $followUser['id']
             && !$followingRepository->isFollowing($user['id'], $followUser['id'])
         ) {

@@ -99,7 +99,7 @@ class Request
     }
 
     /**
-     * GETパラメータは含まない、ベースURLより後ろの値(例: user/edit)を取得
+     * GETパラメータは含まない, ベースURLより後ろの値(例: user/edit)を取得
      * @return string
      */
     public function getPathInfo(): string

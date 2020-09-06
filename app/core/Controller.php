@@ -9,7 +9,12 @@ abstract class Controller
     protected Response $response;
     protected Session $session;
     protected DBManager $dbManager;
-    private $authActions = [];
+
+    /**
+     * 認証が必要なアクション
+     * @var array
+     */
+    protected $authActions = [];
 
     public function __construct(Application $application)
     {
@@ -48,7 +53,12 @@ abstract class Controller
         return $content;
     }
 
-    private function needsAuthentication(string $action)
+    /**
+     * 認証が必要なアクションか
+     * @param string $action
+     * @return bool
+     */
+    private function needsAuthentication(string $action): bool
     {
         if ($this->authActions === true
         || (is_array($this->authActions) && in_array($action, $this->authActions))) {
@@ -63,7 +73,7 @@ abstract class Controller
      * @param array $variables
      * @param string|null $template
      * @param string $layout
-     * @return string
+     * @return false|string
      */
     protected function render(array $variables = [], string $template = null, string $layout = 'layout')
     {
@@ -93,7 +103,11 @@ abstract class Controller
         throw new HttpNotFoundException("Forwarded 404 page from {$this->controllerName}/{$this->actionName}");
     }
 
-    protected function redirect(string $url): void
+    /**
+     * 任意のURLにリダイレクト
+     * @param string $url
+     */
+    protected function redirect(string $url)
     {
         if (!preg_match('#https?://#', $url)) {
             $protocol = $this->request->isSsl() ? 'https://' : 'http://';
@@ -107,7 +121,12 @@ abstract class Controller
         $this->response->setHttpHeader('Location', $url);
     }
 
-    protected function generateCsrfToken(string $formName)
+    /**
+     * CSRFトークンを作成
+     * @param string $formName
+     * @return string
+     */
+    protected function generateCsrfToken(string $formName): string
     {
         $key = "csrf_tokens/{$formName}";
         $tokens = $this->session->get($key, []);
@@ -125,7 +144,13 @@ abstract class Controller
         return $token;
     }
 
-    protected function checkCsrfToken(string $formName, string $token)
+    /**
+     * リクエストとセッションのCSRFトークンが一致しているか確認
+     * @param string $formName
+     * @param string $token
+     * @return bool
+     */
+    protected function checkCsrfToken(string $formName, string $token): bool
     {
         $key = "csrf_tokens/{$formName}";
         $tokens = $this->session->get($key, []);
