@@ -31,7 +31,7 @@ destroy:
 destroy-volumes:
 	docker-compose down --volumes
 
-.PHONY: web
+.PHONY: nginx
 nginx:
 	docker-compose exec nginx bash
 
